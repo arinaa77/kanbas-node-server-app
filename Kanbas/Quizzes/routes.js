@@ -3,6 +3,7 @@ import * as questionsDao from "../Questions/dao.js";
 export default function QuizRoutes(app) {
   app.delete("/api/quizzes/:quizId", async (req, res) => {
     const { quizId } = req.params;
+    await questionsDao.deleteAllQuestionsOfQuiz(quizId);
     const status = await quizzesDao.deleteQuiz(quizId);
     res.send(status);
   });

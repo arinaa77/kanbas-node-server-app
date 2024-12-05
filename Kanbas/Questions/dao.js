@@ -12,3 +12,6 @@ export function deleteQuestion(questionId) {
 export function updateQuestion(questionId, questionUpdates) {
   return model.updateOne({ _id: questionId }, questionUpdates);
 }
+export function deleteAllQuestionsOfQuiz(quizId) {
+  return model.deleteMany({ quiz: quizId });
+}

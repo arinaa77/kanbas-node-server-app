@@ -15,3 +15,6 @@ export function deleteQuiz(quizId) {
 export function updateQuiz(quizId, quizUpdates) {
   return model.updateOne({ _id: quizId }, quizUpdates);
 }
+export function deleteAllQuizzesForCourse(courseId) {
+  return model.deleteMany({ course: courseId });
+}
