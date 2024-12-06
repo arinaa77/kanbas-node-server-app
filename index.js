@@ -12,6 +12,7 @@ import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 import QuizzesRoutes from "./Kanbas/Quizzes/routes.js";
 import QuestionsRoutes from "./Kanbas/Questions/routes.js";
+import AttemptRoutes from "./Kanbas/Attempts/routes.js";
 
 const CONNECTION_STRING =
   process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas";
@@ -46,4 +47,5 @@ ModuleRoutes(app);
 AssignmentRoutes(app);
 QuizzesRoutes(app);
 QuestionsRoutes(app);
+AttemptRoutes(app);
 app.listen(process.env.PORT || 4000);

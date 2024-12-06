@@ -1,6 +1,7 @@
 import * as dao from "./dao.js";
 import * as courseDao from "../Courses/dao.js";
 import * as enrollmentsDao from "../Enrollments/dao.js";
+import * as attemptsDao from "../Attempts/dao.js";
 export default function UserRoutes(app) {
   const createUser = async (req, res) => {
     const user = await dao.createUser(req.body);
@@ -114,6 +115,37 @@ export default function UserRoutes(app) {
     res.send(status);
   };
 
+  const findAttemptsForUser = async (req, res) => {
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    let { uid } = req.params;
+    if (uid === "current") {
+      uid = currentUser._id;
+    }
+    const attempts = await attemptsDao.findAttemptsForUser(uid);
+    res.json(attempts);
+  };
+  const createAttempt = async (req, res) => {
+    const currentUser = req.session["currentUser"];
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    let { uid } = req.params;
+    if (uid === "current") {
+      uid = currentUser._id;
+    }
+    const attempt = {
+      ...req.body,
+      user: uid,
+    };
+    const newAttempt = await attemptsDao.createAttempt(attempt);
+    res.send(newAttempt);
+  };
+
   app.post("/api/users", createUser);
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:userId", findUserById);
@@ -127,4 +159,6 @@ export default function UserRoutes(app) {
   app.get("/api/users/:uid/courses", findCoursesForUser);
   app.post("/api/users/:uid/courses/:cid", enrollUserInCourse);
   app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);
+  app.get("/api/users/:uid/attempts", findAttemptsForUser);
+  app.post("/api/users/:uid/attempts", createAttempt);
 }

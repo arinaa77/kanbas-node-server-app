@@ -1,9 +1,11 @@
 import * as quizzesDao from "./dao.js";
 import * as questionsDao from "../Questions/dao.js";
+import * as attemptsDao from "../Attempts/dao.js";
 export default function QuizRoutes(app) {
   app.delete("/api/quizzes/:quizId", async (req, res) => {
     const { quizId } = req.params;
     await questionsDao.deleteAllQuestionsOfQuiz(quizId);
+    await attemptsDao.deleteAllAttemptsOfQuiz(quizId);
     const status = await quizzesDao.deleteQuiz(quizId);
     res.send(status);
   });
